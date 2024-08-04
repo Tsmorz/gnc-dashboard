@@ -51,7 +51,11 @@ def create_map_figure(data):
         color="color",
         color_continuous_scale=px.colors.sequential.thermal,
     )
-    fig.update_layout(margin={"r": 20, "t": 20, "l": 20, "b": 0})
+    fig.update_layout(
+        margin={"r": 20, "t": 20, "l": 20, "b": 0},
+        showlegend=False,
+        coloraxis_showscale=False,
+    )
     return fig
 
 
@@ -85,10 +89,12 @@ def create_3d_figure(time, x, y, z):
                 title="Z Axis",
                 # scaleanchor="x",  # Link z and x axis scaling
             ),
-            aspectmode="cube",  # Set the aspect ratio to be equal
         ),
-        title="3D Scatter Plot with Equal Aspect Ratio",
+        margin=dict(l=0, r=0, b=0, t=0),
+        # title="3D Scatter Plot with Equal Aspect Ratio",
     )
+    fig.update_layout(showlegend=False)
+    # fig.update_traces(marker=dict(colorbar=dict(visible=False)))
     return fig
 
 
@@ -119,17 +125,37 @@ def run_pipeline():
     # Define the layout of the app
     app.layout = html.Div(
         [
-            # html.H1("Dash Dashboard with Map and 3D Plot"),
-            # Map plot
-            dcc.Graph(id="map-plot", figure=map_fig),
-            # 3D plot
-            dcc.Graph(id="3d-plot", figure=plot_3d_fig),
-            # Interval component to trigger updates every second
-            dcc.Interval(
-                id="interval-component",
-                interval=UPDATE_RATE,  # Update every 1000 milliseconds (1 second)
-                n_intervals=0,
-            ),
+            html.Div(
+                [
+                    # html.H1("Dash Dashboard with Map and 3D Plot"),
+                    # Map plot
+                    html.Div(
+                        dcc.Graph(
+                            id="map-plot",
+                            figure=map_fig,
+                        ),
+                        style={"flex": "1", "padding": "5px"},
+                    ),
+                    html.Div(
+                        # 3D plot
+                        dcc.Graph(
+                            id="3d-plot",
+                            figure=plot_3d_fig.update_layout(showlegend=False),
+                        ),
+                        style={"flex": "1", "padding": "5px"},
+                    ),
+                    # Interval component to trigger updates every second
+                    dcc.Interval(
+                        id="interval-component",
+                        interval=UPDATE_RATE,  # Update every 1000 milliseconds (1 second)
+                        n_intervals=0,
+                    ),
+                ],
+                style={
+                    "display": "flex",
+                    "flex-direction": "row",
+                },  # Use flexbox to align plots side by side
+            )
         ]
     )
 
