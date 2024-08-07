@@ -5,12 +5,11 @@ init:
 	poetry env info
 	@echo "Created virtual environment"
 test:
-	poetry run pytest --cov=project_files project_files/tests/
+	poetry run pytest --cov=src/ tests/
 
 format:
-	poetry run black .
-	poetry run flake8 . --ignore=E501
 	poetry run mypy .
+	ruff check
 
 clean:
 	rm -rf .venv
