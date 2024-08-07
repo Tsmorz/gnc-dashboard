@@ -1,15 +1,29 @@
+#!/usr/bin/env python
+
+import time
+import os
+from datetime import datetime
+
 from loguru import logger
 import serial
 from serial.tools import list_ports
 
-import time
 from definitions import (
     BAUD_RATE,
     COMMON_SERIAL_PORT_STRING,
     SERIAL_PORT_TIMEOUT,
     DECODING,
     GPS_NO_FIX_STRING,
+    DATA_DIR,
+    FLIGHT_LOG_FILENAME,
 )
+
+
+current_date_time = datetime.now()
+file_ending = (
+    f"{current_date_time.year}-{current_date_time.month}-{current_date_time.day}"
+)
+data_log_filename = os.path.join(DATA_DIR, FLIGHT_LOG_FILENAME, file_ending, ".txt")
 
 
 def read_serial_data(serial_port):
@@ -43,7 +57,7 @@ def main():
                 serial_port_name, BAUD_RATE, timeout=SERIAL_PORT_TIMEOUT
             )
             logger.success(f"Connected to {serial_port_name}.")
-            with open("data.txt", "w") as file:
+            with open(data_log_filename, "w") as file:
                 while True:
                     data = read_serial_data(serial_port)
                     if data is None:

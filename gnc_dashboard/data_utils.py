@@ -1,9 +1,12 @@
+#!/usr/bin/env python
+
 import pandas as pd
 import numpy as np
 import time
 
-lat = 42 + 19.5617980957031250 / 60
-lon = -71 - 7.4340000152587891 / 60
+from definitions import BOSTON_LAT_LON
+
+lat, lon = BOSTON_LAT_LON
 
 
 def generate_data(lat=lat, lon=lon):
