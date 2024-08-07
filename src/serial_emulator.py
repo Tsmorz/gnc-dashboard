@@ -7,14 +7,13 @@ Author: Jagatpreet Singh
 Created on: Jan 7, 2021
 """
 
-import os, pty
-from serial import Serial
-import threading
+import os
+import pty
 import time 
 import argparse
 
 class SerialEmulator:
-    
+
     def __init__(self,file,sample_time):
         self.sample_time = sample_time  
         self.file = file 
@@ -50,7 +49,7 @@ class SerialEmulator:
         print("Terminated")
         
     
-if __name__=='__main__':
+if __name__ =='__main__':
     parser = argparse.ArgumentParser(description='Command line options for Serial emulator.\
                                      Press Ctrl-C to stop execution')
     parser.add_argument('-f','--file', required=True, type=str, dest='file',
