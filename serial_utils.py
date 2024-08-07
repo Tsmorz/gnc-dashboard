@@ -59,8 +59,7 @@ def main():
             if not file.closed:
                 file.close()
             logger.success("Program was ended by the user.")
-        except Exception as e:
-            logger.debug(e)
+
     else:
         logger.warning(
             f"No ports were found with {COMMON_SERIAL_PORT_STRING} in the name."
