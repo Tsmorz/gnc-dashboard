@@ -53,7 +53,7 @@ def find_serial_port_name(sub_string=COMMON_SERIAL_PORT_STRING):
         if sub_string in port.device:
             serial_port_name = port.device
             continue
-            
+
     return serial_port_name
 
 
