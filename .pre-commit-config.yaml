@@ -5,62 +5,46 @@ default_language_version:
   python: python3.12
 
 repos:
-  # general checks (see here: https://pre-commit.com/hooks.html)
-  - repo: https://github.com/pre-commit/pre-commit-hooks
+-   repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.6.0
     hooks:
-      - id: check-yaml
-        args: [--allow-multiple-documents]
-      - id: end-of-file-fixer
-      - id: trailing-whitespace
-
-  # ruff - linting + formatting
-  - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: "v0.4.9"
+    -   id: trailing-whitespace
+    -   id: end-of-file-fixer
+    -   id: check-yaml
+    -   id: debug-statements
+    -   id: double-quote-string-fixer
+    -   id: name-tests-test
+    -   id: requirements-txt-fixer
+-   repo: https://github.com/asottile/setup-cfg-fmt
+    rev: v2.5.0
     hooks:
-      - id: ruff
-        name: ruff
-      - id: ruff-format
-        name: ruff-format
-
-  # mypy - lint-like type checking
-  - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v1.10.0
+    -   id: setup-cfg-fmt
+-   repo: https://github.com/asottile/reorder-python-imports
+    rev: v3.13.0
     hooks:
-      - id: mypy
-        name: mypy
-
-  # docformatter - formats docstrings to follow PEP 257
-  - repo: https://github.com/PyCQA/docformatter
-    rev: v1.7.5
-    hooks:
-      - id: docformatter
-        additional_dependencies: [tomli]
-        args: [./pyproject.toml]
-
-  # bandit - find common security issues
-  - repo: https://github.com/pycqa/bandit
-    rev: 1.7.9
-    hooks:
-      - id: bandit
-        name: bandit
-        exclude: ^tests/
-        args:
-          - -r
-          - src
-
-  - repo: local
-    hooks:
-      - id: pytest
-        name: pytest
-        entry: poetry run pytest --cov=src tests
-        language: system
-        types: [python]
-        pass_filenames: false
-
-  # prettier - formatting JS, CSS, JSON, Markdown, ...
-  - repo: https://github.com/pre-commit/mirrors-prettier
+    -   id: reorder-python-imports
+        exclude: ^(pre_commit/resources/|testing/resources/python3_hooks_repo/)
+        args: [--py39-plus, --add-import, 'from __future__ import annotations']
+-   repo: https://github.com/asottile/add-trailing-comma
     rev: v3.1.0
     hooks:
-      - id: prettier
-        exclude: ^poetry.lock
+    -   id: add-trailing-comma
+-   repo: https://github.com/asottile/pyupgrade
+    rev: v3.17.0
+    hooks:
+    -   id: pyupgrade
+        args: [--py39-plus]
+-   repo: https://github.com/hhatto/autopep8
+    rev: v2.3.1
+    hooks:
+    -   id: autopep8
+-   repo: https://github.com/PyCQA/flake8
+    rev: 7.1.1
+    hooks:
+    -   id: flake8
+-   repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.11.1
+    hooks:
+    -   id: mypy
+        additional_dependencies: [types-pyyaml]
+        exclude: ^testing/resources/
