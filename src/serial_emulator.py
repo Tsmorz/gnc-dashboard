@@ -11,6 +11,7 @@ import os
 import pty
 import time
 import argparse
+from definitions import GPS_FILE, IMU_FILE
 
 
 class SerialEmulator:
@@ -19,20 +20,23 @@ class SerialEmulator:
         self.sample_time = sample_time
         self.file = file
         self.master = None
+        self.slave = None
+        self.port_name = ""
 
     def write_file_to_pt(self):
         f = open(self.file, "r")
-        Lines = f.readlines()
-        for line in Lines:
-            line1 = line + "\r"
-            os.write(self.master, str.encode(line1))
+        lines = f.readlines()
+        for line in lines:
+            print(line)
+            os.write(self.master, str.encode(line + "\n"))
             time.sleep(self.sample_time)
         f.close()
 
     def emulate_device(self):
         """Start the emulator"""
-        self.master, self.slave = pty.openpty()  # open the pseudoterminal
+        self.master, self.slave = pty.openpty()
         print("The Pseudo device address: %s" % os.ttyname(self.slave))
+        self.port_name = os.ttyname(self.slave)
         try:
             while True:
                 self.write_file_to_pt()
@@ -50,10 +54,16 @@ class SerialEmulator:
         print("Terminated")
 
 
-if __name__ == "__main__":
+def serial_emulator_pipeline():
+    se = SerialEmulator(IMU_FILE, sample_time=1)
+    se.start_emulator()
+    return
+
+
+def main():
     parser = argparse.ArgumentParser(
-        description="Command line options for Serial emulator.\
-                                     Press Ctrl-C to stop execution"
+        description="Command line options for Serial emulator. "
+        "Press Ctrl-C to stop execution"
     )
     parser.add_argument(
         "-f",
@@ -75,7 +85,11 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
     if args.sample_time <= 0:
-        print("sample time must be positive.Setting it to default 1 second")
+        print("Sample time must be positive. Setting it to default 1 second")
         args.sample_time = 1
     se = SerialEmulator(args.file, args.sample_time)
     se.start_emulator()
+
+
+if __name__ == "__main__":
+    main()
