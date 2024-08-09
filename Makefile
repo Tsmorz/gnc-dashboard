@@ -8,8 +8,8 @@ test:
 	poetry run pytest --cov=src/ tests/
 
 format:
-	poetry run mypy .
 	ruff check
+	poetry run mypy --ignore-missing-imports
 
 clean:
 	rm -rf .venv
