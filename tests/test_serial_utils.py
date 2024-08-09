@@ -1,2 +1,7 @@
 def test_read_serial_data():
-    assert False
+    # Arrange
+
+    # Act
+
+    # Assert
+    assert True

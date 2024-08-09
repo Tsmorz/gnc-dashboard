@@ -20,11 +20,6 @@ from definitions import (
 )
 
 
-data_log_filename = os.path.join(
-    DATA_DIR, FLIGHT_LOG_FILENAME, date_time_string() + ".txt"
-)
-
-
 def read_serial_line(serial_port):
     """
     Read a line of data from the serial port
@@ -50,6 +45,7 @@ def find_serial_port_name(sub_string=COMMON_SERIAL_PORT_STRING):
     """
     serial_port_name = ""
     for port in list_ports.comports():
+        print(port)
         if sub_string in port.device:
             serial_port_name = port.device
             continue
@@ -66,6 +62,10 @@ def stream_from_port(port_name):
                 serial_port_name, BAUD_RATE, timeout=SERIAL_PORT_TIMEOUT
             )
             logger.success(f"Connected to {serial_port_name}.")
+
+            data_log_filename = os.path.join(
+                DATA_DIR, FLIGHT_LOG_FILENAME, date_time_string() + ".txt"
+            )
             with open(data_log_filename, "w") as file:
                 while True:
                     data = read_serial_line(serial_port)
