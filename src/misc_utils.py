@@ -3,7 +3,7 @@
 from datetime import datetime
 
 
-def create_filename_ending():
+def date_time_string():
     current_date_time = datetime.now()
 
     ending = (
