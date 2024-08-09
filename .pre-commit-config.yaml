@@ -31,24 +31,12 @@ repos:
         name: mypy
 
   # docformatter - formats docstrings to follow PEP 257
-  - repo: https://github.com/pycqa/docformatter
+  - repo: https://github.com/PyCQA/docformatter
     rev: v1.7.5
     hooks:
       - id: docformatter
-        name: docformatter
-        args:
-          [
-            -r,
-            -i,
-            --pre-summary-newline,
-            --make-summary-multi-line,
-            --wrap-summaries,
-            "90",
-            --wrap-descriptions,
-            "90",
-            src,
-            tests,
-          ]
+        additional_dependencies: [tomli]
+        args: [./pyproject.toml]
 
   # bandit - find common security issues
   - repo: https://github.com/pycqa/bandit
